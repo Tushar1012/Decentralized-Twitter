@@ -1,32 +1,21 @@
-const {ethers} = require("hardhat");
-require("dotenv").config({path:".env"});
-const {CRYPTO_DEVS_NFT_CONTRACT_ADDRESS} = require("../constants");
+const hre = require("hardhat");
 
+async function main() 
+{
 
-async function main(){
-    // Address of the Crypto Devs NFT contract that you deployed in the previous module
-    const cryptoDevsNFTContract = CRYPTO_DEVS_NFT_CONTRACT_ADDRESS;
+  // We get the contract to deploy
+  const Dwitter = await hre.ethers.getContractFactory("Dwitter");
+  const dwitter = await Dwitter.deploy();
 
-     /*
-    A ContractFactory in ethers.js is an abstraction used to deploy new smart contracts,
-    so cryptoDevsTokenContract here is a factory for instances of our CryptoDevToken contract.
-    */
-   const cryptoDevsTokenContract = await ethers.getContractFactory(
-       "CryptoDevToken"
-   );
+  await dwitter.deployed();
 
-   // deploy the contract
-
-   const deployedCryptoDevsTokenContract = await cryptoDevsTokenContract.deploy(
-       cryptoDevsNFTContract);
-
-       console.log("Crypto Devs Token Contract Address:",
-       deployedCryptoDevsTokenContract.address);
+  console.log("Dwitter deployed to:",dwitter.address);
 }
 
 
 
-// Call the main function and catch if there is any error
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
 main()
   .then(() => process.exit(0))
   .catch((error) => {
