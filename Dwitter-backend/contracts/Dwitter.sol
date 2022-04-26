@@ -8,6 +8,13 @@ contract Dwitter {
     string bio;
     string avatar;
     }
+
+    struct Dweet {
+        string auther;
+        string content;
+        uint timestamp;
+        uint like;
+    }
     mapping (address => string) public usernames;
     mapping (string => User) public users;
 
@@ -29,4 +36,18 @@ contract Dwitter {
     function getUser(address _wallet) public view  returns(User memory) {
         return users[usernames[_wallet]];
     }
+
+    //function post twitte
+    function postDweet(string memory _contant) 
+
+{
+
+    require(bytes(usernames[msg.sender]).length > 0)
+    require(bytes(usernames[msg.sender]).length > 0)
+}     
+
+
+
+
+
 }
