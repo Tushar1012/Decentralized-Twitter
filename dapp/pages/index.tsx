@@ -7,6 +7,7 @@ import useDwitter from '../Hooks/useDwitter'
 
 const Home: NextPage = () => {
   const {connectWallet ,account,user,createUser,postDweet,dweets} = useDwitter();
+  //hook to add all in one import
   const [dweetContent, setDweetContent]= useState<string>('')
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-20">
