@@ -30,8 +30,26 @@ describe("Dwitter", function () {
       .signup("Tush","Tushar","some other bio","SomeAvatar")
     ).to.be.revertedWith("Username is taken , please try another one.");
     console.log("test username is taken");
+
+    await dwitter.postDweet("hello tanish");
+    expect((await dwitter.dweets(0)).content).to.equal("Helo mr tnish"); 
+    //console.log(dweet);
+
+
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

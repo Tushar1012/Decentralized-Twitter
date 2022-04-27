@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from './Button';
-import button from './Button';
+
 
 type Props = {
   createUser: (
@@ -68,7 +68,7 @@ const MyForm: React.FC<Props> = ({ createUser }) => {
         />
       </div>
       <Button
-        text="Sign Up"
+        label="Sign Up"
         onClick={() => createUser(yourUserName, yourName, yourBio, yourAvatar)}
       />
     </div>

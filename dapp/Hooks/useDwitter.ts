@@ -1,5 +1,5 @@
 import Dwitter from './Dwitter.json';
-import { ethers, providers } from 'ethers';
+import { ethers } from 'ethers';
 import { useState, useEffect } from 'react';
 
 const ContractABI = Dwitter.abi;
@@ -11,18 +11,25 @@ const getDwitterContract = () => {
   return new ethers.Contract(ContractAddress, ContractABI, signer);
 };
 
-type User = () => {
+type User =  {
   avatar: string;
   bio: string;
   name: string;
   username: string;
   wallet: string;
 };
-
+type Dweet = {
+  content: string;
+  timestamp: number;
+  author: string;
+  likes: number
+}
 const useDwitter = () => {
   // const Dwitter = getDwitterContract();
   const [currentAccount, setCurrentAccount] = useState<String>('');
+  const [dweets, setDweets] = useState<Dweet[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  
 
   const connectWallet = async () => {
     try {
@@ -51,18 +58,22 @@ const useDwitter = () => {
       return;
     }
     connectWallet();
+    getDweets();
   }, []);
 
   //another UE for user
   useEffect(() => {
-    if (currentAccount) getUser();
+    if (currentAccount){
+      getUser();
+      getDweets();
+    } 
   }, [currentAccount]);
 
   const getUser = async () => {
-    const Contract = getDwitterContract();
-    const user = await Contract.getUser(currentAccount);
+    const contract = getDwitterContract();
+    const user = await contract.getUser(currentAccount);
     const { avatar, bio, name, username, wallet } = user;
-    setCurrentUser({ avatar , bio, name, username, wallet });
+    setCurrentUser({ avatar, bio, name, username, wallet });
     return user;
   };
 
@@ -75,9 +86,23 @@ const useDwitter = () => {
     const contract = getDwitterContract();
     const user = await contract.signup(username,name,bio,avatar);
     console.log(user);
+    getUser();
     
   };
-  return { connectWallet, account: currentAccount, user: currentUser  ,createUser};
+  
+  const postDweet = async(dweet: string)=>{
+    const contract = getDwitterContract();
+    await contract.postDweet(dweet);
+    await getDweets();
+  }
+  const getDweets = async () => {
+  const contract = getDwitterContract();
+  const dweets = await contract.getDweets();
+  console.log(dweets);
+  setDweets(dweets);
+  }
+
+  return { connectWallet, account: currentAccount, user: currentUser  ,createUser, postDweet, dweets};
 };
 
 export default useDwitter;

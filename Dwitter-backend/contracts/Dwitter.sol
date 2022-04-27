@@ -10,11 +10,13 @@ contract Dwitter {
     }
 
     struct Dweet {
-        string auther;
+        address author;
         string content;
         uint timestamp;
-        uint like;
+        uint likes;
     }
+
+    Dweet[] public dweets;
     mapping (address => string) public usernames;
     mapping (string => User) public users;
 
@@ -38,16 +40,21 @@ contract Dwitter {
     }
 
     //function post twitte
-    function postDweet(string memory _contant) 
+    function postDweet(string memory _content) public
+    {
+        require(bytes(usernames[msg.sender]).length > 0,"you must singup to post a dweet");
+        require(bytes(_content).length > 0, "You must write something to post a dwwet");
+        require(bytes(_content).length <=140, "your dweet is to long");
 
-{
+        Dweet memory dweet = Dweet({
+            author: msg.sender, content: _content, timestamp: block.timestamp, likes:0
+        });
+        dweets.push(dweet);
 
-    require(bytes(usernames[msg.sender]).length > 0)
-    require(bytes(usernames[msg.sender]).length > 0)
-}     
-
-
-
-
+    }
+    function getDweets() public view returns (Dweet[] memory) {
+        return dweets;
+        
+    }
 
 }
