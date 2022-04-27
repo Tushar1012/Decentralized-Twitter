@@ -32,7 +32,7 @@ const Home: NextPage = () => {
             <div className="flex items-center w-80">
               <img src={user?.avatar} className="rounded-full h-16 w-16  mr-4"/>
             
-              
+              //textarea will ask detail
               <textarea className='rounded-xl ml-4 w-64' placeholder="What's happening?" value={dweetContent} onChange={e=>setDweetContent(e.target.value)} />
               </div>
              
